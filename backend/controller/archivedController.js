@@ -46,7 +46,7 @@ export const archiveOutpatient = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
-// Get Archived Patients (Both Inpatients and Outpatients)
+// Get Archived Patients Both Inpatients and Outpatients
 export const getArchivedPatients = catchAsyncErrors(async (req, res, next) => {
     const archivedPatients = await ArchivedPatient.find(); //includes both archived inpatients and outpatients
 

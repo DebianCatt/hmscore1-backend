@@ -11,6 +11,7 @@ import userRouter from "./router/userRouter.js";
 import inpatientRouter from "./router/inpatientRouter.js";
 import outpatientRouter from "./router/outpatientRouter.js";
 import archivedRouter from "./router/archivedRouter.js";
+import { updateInpatient } from "./controller/inpatientController.js";
 
 
 
@@ -39,6 +40,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/inpatients", inpatientRouter);
 app.use("/api/v1/outpatients", outpatientRouter);
 app.use("/api/v1/archivedPatients", archivedRouter);
+app.use("/api/v1/updateInpatients", inpatientRouter);
 
 
 dbConnection();

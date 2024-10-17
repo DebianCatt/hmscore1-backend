@@ -115,3 +115,22 @@ export const getInpatientCount = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
+
+export const updateInpatient = async (req, res) => {
+    const { patientId } = req.params; // Get the patientId from the URL
+    const updatedData = req.body; // Get the data to update from the request body
+
+    try {
+        // Find the inpatient using the patientId in the database
+        const updatedInpatient = await Inpatient.findOneAndUpdate({ patientId }, updatedData, { new: true });
+        if (!updatedInpatient) {
+            return res.status(404).json({ message: "Inpatient not found" });
+        }
+        return res.status(200).json({ message: "Inpatient updated successfully", updatedInpatient });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Failed to update inpatient", error });
+    }
+};
+
+

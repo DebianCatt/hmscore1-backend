@@ -10,7 +10,7 @@ const router = express.Router();
 
 
 router.post("/add", isAdminAuthenticated, postInpatient); 
-router.post("/discharge/:patientId", isAdminAuthenticated, dischargePatient); // Route for discharging patients
+router.post("/discharge/:patientId", isAdminAuthenticated, dischargePatient);
 
 
 router.get("/inpatients", isAdminAuthenticated, getAllInpatients);

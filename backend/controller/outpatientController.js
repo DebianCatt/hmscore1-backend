@@ -69,13 +69,13 @@ export const dischargeOutpatient = catchAsyncErrors(async (req, res, next) => {
         return next(new ErrorHandler("Outpatient not found!", 404));
     }
 
-    // Create an archived record from the outpatient data
+    // create an archived record from the outpatient data
     const archivedPatient = await ArchivedPatient.create({
-        ...outpatient.toObject(), // Copy outpatient data
-        status: "Archived", // Set status to Archived
+        ...outpatient.toObject(), // copy nya outpatient data
+        status: "Archived",
     });
 
-    // Delete the original outpatient record. Optional
+    // delete the original outpatient record. OPTIONAL (for next system upd?)
     await Outpatient.deleteOne({ patientId });
 
     res.status(200).json({
@@ -87,7 +87,7 @@ export const dischargeOutpatient = catchAsyncErrors(async (req, res, next) => {
 
 
 export const getOutpatients = catchAsyncErrors(async (req, res, next) => {
-    const outpatients = await Outpatient.find(); // Fetch all outpatients from the database
+    const outpatients = await Outpatient.find();
 
     if (!outpatients) {
         return next(new ErrorHandler("No outpatients found!", 404));
@@ -95,17 +95,38 @@ export const getOutpatients = catchAsyncErrors(async (req, res, next) => {
 
     res.status(200).json({
         success: true,
-        outpatients, // Send the outpatient records in the response
+        outpatients,
     });
 });
 
 
 
 export const getOutpatientCount = catchAsyncErrors(async (req, res, next) => {
-    const count = await Outpatient.countDocuments(); // Count all outpatient records
+    const count = await Outpatient.countDocuments();
     res.status(200).json({
         success: true,
-        count, // Send back the count
+        count,
+    });
+});
+
+
+export const updateOutpatient = catchAsyncErrors(async (req, res, next) => {
+    const { patientId } = req.params;
+
+    // find the outpatient by patientId
+    const outpatient = await Outpatient.findOne({ patientId });
+    if (!outpatient) {
+        return next(new ErrorHandler("Outpatient not found!", 404));
+    }
+
+    // update the outpatient record
+    Object.assign(outpatient, req.body);
+    await outpatient.save(); // Save chnges
+
+    res.status(200).json({
+        success: true,
+        message: "Outpatient record updated successfully!",
+        outpatient,
     });
 });
 

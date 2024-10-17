@@ -8,14 +8,18 @@ const router = express.Router();
 
 router.post("/add", isAdminAuthenticated, postOutpatient);
 
-// Route to fetch all outpatients
+
 router.get("/outpatients", isAdminAuthenticated, getOutpatients);
 
-// Route to discharge and archive an outpatient
+
 router.post("/archive/:patientId", isAdminAuthenticated, dischargeOutpatient);
 
 
 router.get('/count', outpatientController.getOutpatientCount);
+
+router.put("/update/:patientId", isAdminAuthenticated, outpatientController.updateOutpatient);
+
+
 
 
 export default router;

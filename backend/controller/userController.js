@@ -228,3 +228,73 @@ export const addNewDoctor = catchAsyncErrors(async(req,res,next)=>{
         doctor
     })
 });
+
+
+
+export const deleteDoctor = catchAsyncErrors(async (req, res, next) => {
+    const doctor = await User.findById(req.params.id);
+
+    if (!doctor || doctor.role !== "Doctor") {
+        return next(new ErrorHandler("Doctor not found!", 404));
+    }
+
+    // Delete doctor avatar from Cloudinary (if it exists)
+    if (doctor.docAvatar && doctor.docAvatar.public_id) {
+        await cloudinary.uploader.destroy(doctor.docAvatar.public_id);
+    }
+
+    // Use findByIdAndDelete to remove the doctor from the database
+    await User.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({
+        success: true,
+        message: "Doctor deleted successfully!",
+    });
+});
+
+
+// userController.js
+export const updateDoctor = catchAsyncErrors(async (req, res, next) => {
+    const doctor = await User.findById(req.params.id);
+
+    if (!doctor || doctor.role !== "Doctor") {
+        return next(new ErrorHandler("Doctor not found!", 404));
+    }
+
+    const { firstName, lastName, email, phone, gender, dob, philsysornic, doctorDepartment } = req.body;
+
+    // Update doctor's details
+    doctor.firstName = firstName || doctor.firstName;
+    doctor.lastName = lastName || doctor.lastName;
+    doctor.email = email || doctor.email;
+    doctor.phone = phone || doctor.phone;
+    doctor.gender = gender || doctor.gender;
+    doctor.dob = dob || doctor.dob;
+    doctor.philsysornic = philsysornic || doctor.philsysornic;
+    doctor.doctorDepartment = doctorDepartment || doctor.doctorDepartment;
+
+    // handle new image upload
+    if (req.files && req.files.docAvatar) {
+        const { docAvatar } = req.files;
+
+        // checks the old avatar exists and delete it from Cloudinary
+        if (doctor.docAvatar && doctor.docAvatar.public_id) {
+            await cloudinary.uploader.destroy(doctor.docAvatar.public_id);
+        }
+
+        // uppload new image to Cloudinary
+        const cloudinaryResponse = await cloudinary.uploader.upload(docAvatar.tempFilePath);
+        doctor.docAvatar = {
+            public_id: cloudinaryResponse.public_id,
+            url: cloudinaryResponse.secure_url,
+        };
+    }
+
+    await doctor.save();
+
+    res.status(200).json({
+        success: true,
+        message: "Doctor updated successfully!",
+        doctor
+    });
+});

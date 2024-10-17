@@ -11,7 +11,7 @@ import userRouter from "./router/userRouter.js";
 import inpatientRouter from "./router/inpatientRouter.js";
 import outpatientRouter from "./router/outpatientRouter.js";
 import archivedRouter from "./router/archivedRouter.js";
-import { updateInpatient } from "./controller/inpatientController.js";
+//import { updateInpatient } from "./controller/inpatientController.js";
 
 
 

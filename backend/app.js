@@ -41,6 +41,12 @@ app.use("/api/v1/outpatients", outpatientRouter);
 app.use("/api/v1/archivedPatients", archivedRouter);
 app.use("/api/v1/updateInpatients", inpatientRouter);
 
+//test route
+app.get("/test", (req, res) => {
+    res.status(200).send("Backend is running!");
+});
+
+
 
 dbConnection();
 

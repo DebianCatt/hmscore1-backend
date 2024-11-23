@@ -14,10 +14,15 @@ import archivedRouter from "./router/archivedRouter.js";
 const app = express();
 
 app.use(cors({
-  origin: [process.env.DASHBOARD_URL],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-}));
+    origin: [
+      process.env.DASHBOARD_URL, // Frontend URL in .env
+      "https://core1.nodadogenhospital.com", // Frontend URL directly added for CORS
+      "https://hmscore1-backend.vercel.app", // Vercel Backend URL
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true, // Allow cookies if needed
+  }));
+  
 
 app.use(cookieParser());
 app.use(express.json());

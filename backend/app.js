@@ -18,7 +18,7 @@ const app = express();
 //config({path: "./config/config.env"});
 
 app.use(cors({
-    origin: process.env.DASHBOARD_URL || "https://core1.nodadogenhospital.com",
+    origin: [process.env.DASHBOARD_URL || "https://core1.nodadogenhospital.com"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
 }));

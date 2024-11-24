@@ -7,7 +7,7 @@ export const generateToken = (user, message, statusCode, res) => {
         expires: new Date(Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        domain: 'core1.nodadogenhospital.com',
+        domain: '.nodadogenhospital.com',
     }).json({
         success: true,
         message,

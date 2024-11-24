@@ -43,8 +43,7 @@ app.use("/api/v1/updateInpatients", inpatientRouter);
 
 //test route
 app.get("/test", (req, res) => {
-    res.status(200).send("Backend is running!");
-    console.log("DASHURL:", process.env.DASHBOARD_URL);
+    res.status(200).send("Backend is running!", process.env.DASHBOARD_URL);
 });
 
 

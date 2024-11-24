@@ -18,7 +18,7 @@ const app = express();
 //config({path: "./config/config.env"});
 
 app.use(cors({
-    origin: ["https://core1.nodadogenhospital.com" || process.env.DASHBOARD_URL],
+    origin: "https://core1.nodadogenhospital.com" || process.env.DASHBOARD_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
 }));
@@ -43,7 +43,7 @@ app.use("/api/v1/updateInpatients", inpatientRouter);
 
 //test route
 app.get("/test", (req, res) => {
-    res.status(200).send("Backend is running!", process.env.DASHBOARD_URL);
+    res.status(200).send("Backend is running!");
 });
 
 

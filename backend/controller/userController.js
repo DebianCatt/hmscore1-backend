@@ -54,8 +54,9 @@ export const patientRegister = catchAsyncErrors(async(req,res,next)=>{
 
 export const login = catchAsyncErrors(async(req,res,next) => {
     const {email,password,confirmPassword,role} = req.body;
+    
     if (!email || !password || !confirmPassword || !role){
-    return next(new ErrorHandler("Please provide login details!", 400))
+        return next(new ErrorHandler("Please provide login details!", 400))
     }
 
     if(password !== confirmPassword) {
@@ -66,21 +67,20 @@ export const login = catchAsyncErrors(async(req,res,next) => {
     if(!user){
         return next(new ErrorHandler("Invalid password or email!", 400));
     }
+    
     const isPasswordMatched = await user.comparePassword(password);
     if(!isPasswordMatched){
         return next(new ErrorHandler("Invalid password or email!", 400));
     }
+    
     if(role !== user.role){
         return next(new ErrorHandler("User with this role not found!", 400));
     }
 
-    generateToken(user, "User login successfully!", 200, res)
-
-    /*res.status(200).json({
-        success: true,
-        message: "User logged in successfully!",
-    })*/
+    // This will call the generateToken and set the correct cookie
+    generateToken(user, "User login successfully!", 200, res);
 });
+
 
 export const addNewAdmin = catchAsyncErrors(async(req,res,next) =>{
     const {

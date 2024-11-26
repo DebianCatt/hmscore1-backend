@@ -149,7 +149,7 @@ export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
         secure: process.env.NODE_ENV === "production",
         sameSite: 'None',
         expires: new Date(Date.now()),
-    }).redirect("/login");  // Redirect to the login page after logout
+    }).redirect("/user/login");  // Redirect to the login page after logout
 });
 
 

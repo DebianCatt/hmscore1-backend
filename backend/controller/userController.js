@@ -156,7 +156,7 @@ export const logoutAdmin = catchAsyncErrors(async(req, res, next) => {
 });
 
 
-/*export const logoutPatient  = catchAsyncErrors(async(req,res,next)=>{
+export const logoutPatient  = catchAsyncErrors(async(req,res,next)=>{
     res.status(200).cookie("patientToken", "", {
         httpOnly: true,
         expires: new Date(Date.now()),
@@ -164,7 +164,7 @@ export const logoutAdmin = catchAsyncErrors(async(req, res, next) => {
         success: true,
         message: "Patient logged out successfully!",
     });
-});*/
+});
 
 export const addNewDoctor = catchAsyncErrors(async(req,res,next)=>{
     if(!req.files || Object.keys(req.files).length === 0){

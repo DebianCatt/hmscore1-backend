@@ -3,59 +3,59 @@ import { ArchivedPatient } from "../models/archiveSchema.js";
 import { Outpatient } from "../models/outpatientSchema.js";
 import ErrorHandler from "../middlewares/errorMiddleware.js";
 
-// Archive Outpatient
-export const archiveOutpatient = catchAsyncErrors(async (req, res, next) => {
-    const outpatientId = req.params.id;
+// Archive Outpatient or Inpatient
+export const archivePatient = catchAsyncErrors(async (req, res, next) => {
+    const patientId = req.params.id;
 
-    // Find the outpatient by ID
-    const outpatient = await Outpatient.findById(outpatientId);
+    // Find the patient (either outpatient or inpatient) by ID
+    const outpatient = await Outpatient.findById(patientId);
+    const inpatient = await Inpatient.findById(patientId); // Assuming you have an Inpatient model
 
-    if (!outpatient) {
-        return next(new ErrorHandler("Outpatient not found!", 404));
+    let patientToArchive = null;
+    let dischargeDate = null;
+
+    if (outpatient) {
+        // Archive the outpatient
+        patientToArchive = outpatient;
+
+        // Set dischargeDate to current date for outpatient archiving
+        dischargeDate = new Date(); // Archive date is set to the current date
+    } else if (inpatient) {
+        // Archive the inpatient
+        patientToArchive = inpatient;
+
+        // Set dischargeDate to current date for inpatient archiving
+        dischargeDate = new Date(); // Archive date is set to the current date
+    } else {
+        return next(new ErrorHandler("Patient not found!", 404));
     }
 
-    // Archive the outpatient
-    const archivedOutpatient = await ArchivedPatient.create({
-        firstName: outpatient.firstName,
-        middleName: outpatient.middleName,
-        lastName: outpatient.lastName,
-        dob: outpatient.dob,
-        gender: outpatient.gender,
-        mobile: outpatient.mobile,
-        landline: outpatient.landline,
-        email: outpatient.email,
-        address: outpatient.address,
-        primaryHealthConcern: outpatient.primaryHealthConcern,
-        medicalHistory: outpatient.medicalHistory,
-        currentMedications: outpatient.currentMedications,
-        familyMedicalHistory: outpatient.familyMedicalHistory,
-        insuranceInformation: outpatient.insuranceInformation,
-        patientId: outpatient.patientId,
-        appointmentDate: outpatient.appointmentDate,
-        followUpNeeded: outpatient.followUpNeeded,
+    // Create archived patient without deleting the original patient data
+    const archivedPatient = await ArchivedPatient.create({
+        firstName: patientToArchive.firstName,
+        middleName: patientToArchive.middleName,
+        lastName: patientToArchive.lastName,
+        dob: patientToArchive.dob,
+        gender: patientToArchive.gender,
+        mobile: patientToArchive.mobile,
+        landline: patientToArchive.landline,
+        email: patientToArchive.email,
+        address: patientToArchive.address,
+        primaryHealthConcern: patientToArchive.primaryHealthConcern,
+        medicalHistory: patientToArchive.medicalHistory,
+        currentMedications: patientToArchive.currentMedications,
+        familyMedicalHistory: patientToArchive.familyMedicalHistory,
+        insuranceInformation: patientToArchive.insuranceInformation,
+        patientId: patientToArchive.patientId,
+        appointmentDate: patientToArchive.appointmentDate, // For outpatients
+        dischargeDate: dischargeDate, // Set the discharge date to the current date
         status: "Archived",
     });
 
-    // Remove the outpatient record from the original collection
-    await Outpatient.findByIdAndDelete(outpatientId);
-
     res.status(201).json({
         success: true,
-        message: "Outpatient archived successfully!",
-        archivedOutpatient,
+        message: "Patient archived successfully!",
+        archivedPatient,
     });
 });
 
-// Get Archived Patients Both Inpatients and Outpatients
-export const getArchivedPatients = catchAsyncErrors(async (req, res, next) => {
-    const archivedPatients = await ArchivedPatient.find(); //includes both archived inpatients and outpatients
-
-    if (!archivedPatients.length) {
-        return next(new ErrorHandler("No archived patients found!", 404));
-    }
-
-    res.status(200).json({
-        success: true,
-        archivedPatients,
-    });
-});

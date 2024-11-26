@@ -149,11 +149,9 @@ export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
         secure: process.env.NODE_ENV === "production",
         sameSite: 'None',
         expires: new Date(Date.now()),
-    }).json({
-        success: true,
-        message: "Admin logged out successfully!",
-    });
+    }).redirect("/login");  // Redirect to the login page after logout
 });
+
 
 // Patient logout not needed asofnow
 export const logoutPatient = catchAsyncErrors(async (req, res, next) => {

@@ -143,22 +143,23 @@ export const getUserDetails = catchAsyncErrors(async(req,res,next)=>{
 });
 
 
-export const logoutAdmin = catchAsyncErrors(async(req, res, next) => {
-    res.status(200).cookie("adminToken", "", {
+export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
+    res.clearCookie("adminToken", {
         httpOnly: true,
-        expires: new Date(Date.now()),
-        sameSite: 'None',
         secure: process.env.NODE_ENV === "production",
+        sameSite: 'None',
+        expires: new Date(Date.now()),
     }).json({
         success: true,
         message: "Admin logged out successfully!",
     });
 });
 
-
-export const logoutPatient  = catchAsyncErrors(async(req,res,next)=>{
-    res.status(200).cookie("patientToken", "", {
+// Patient logout not needed asofnow
+export const logoutPatient = catchAsyncErrors(async (req, res, next) => {
+    res.clearCookie("patientToken", {
         httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
         expires: new Date(Date.now()),
     }).json({
         success: true,

@@ -14,7 +14,7 @@ export const archiveOutpatient = catchAsyncErrors(async (req, res, next) => {
         return next(new ErrorHandler("Outpatient not found!", 404));
     }
 
-    // Archive the outpatient
+    
     const archivedOutpatient = await ArchivedPatient.create({
         firstName: outpatient.firstName,
         middleName: outpatient.middleName,

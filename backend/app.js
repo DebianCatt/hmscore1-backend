@@ -9,6 +9,7 @@ import userRouter from "./router/userRouter.js";
 import inpatientRouter from "./router/inpatientRouter.js";
 import outpatientRouter from "./router/outpatientRouter.js";
 import archivedRouter from "./router/archivedRouter.js";
+import wardRouter from "./router/wardRouter.js";
 import cloudinary from "cloudinary";
 
 const app = express();

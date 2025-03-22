@@ -53,11 +53,11 @@ export const patientRegister = catchAsyncErrors(async(req,res,next)=>{
 });
 
 export const login = catchAsyncErrors(async(req,res,next) => {
-    const {email,password,confirmPassword,role} = req.body;
+    const {email,password,role} = req.body;
     
-    if (!email || !password || !role){
-        return next(new ErrorHandler("Please provide login details!", 400))
-    }
+    // if (!email || !password || !role){
+    //     return next(new ErrorHandler("Please provide login details!", 400))
+    // }
 
     if (!email || !password){
         return next(new ErrorHandler("Please provide login details!", 400))

@@ -28,6 +28,9 @@ export const postInpatient = catchAsyncErrors(async (req, res, next) => {
         expectedLengthOfStay,
         emergencyContact,
         guardianDetails,
+        ward,
+        physician,
+
     } = req.body;
 
     if (!firstName || !lastName || !dob || !gender || !mobile || !address || !primaryHealthConcern || !admissionDate) {
@@ -58,6 +61,8 @@ export const postInpatient = catchAsyncErrors(async (req, res, next) => {
         expectedLengthOfStay,
         emergencyContact,
         guardianDetails,
+        ward,
+        physician
     });
 
     res.status(201).json({

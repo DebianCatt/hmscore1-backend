@@ -104,6 +104,51 @@ const inpatientSchema = new mongoose.Schema({
         enum: ["Active", "Discharged"],
         default: "Active",
     },
+
+    ward: {
+        id : {
+            type : String,
+        },
+        roomNumber : {
+            type : String
+        },
+        roomModel : {
+            type : String
+        },
+        roomStatus : {
+            type: String
+        },
+        loadCount : {
+            type : Number
+        },
+        capacity: {
+            type : Number
+        },
+        description: {
+            type : String
+        },
+        lastUpdate : {
+            type: String
+        }
+    },
+
+    physician : {
+        id : {
+            type : String,
+        },
+        name : {
+            type : String
+        },
+        email : {
+            type: String
+        },
+        philsysornic : {
+            type : String
+        },
+        doctorDepartment : {
+            type : String
+        }
+    }
 });
 
 export const Inpatient = mongoose.model("Inpatient", inpatientSchema);

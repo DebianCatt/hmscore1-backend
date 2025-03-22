@@ -55,9 +55,9 @@ export const patientRegister = catchAsyncErrors(async(req,res,next)=>{
 export const login = catchAsyncErrors(async(req,res,next) => {
     const {email,password,role} = req.body;
     
-    // if (!email || !password || !role){
-    //     return next(new ErrorHandler("Please provide login details!", 400))
-    // }
+    if (!email || !password || !role){
+        return next(new ErrorHandler("Please provide login details!", 400))
+    }
 
     if (!email || !password){
         return next(new ErrorHandler("Please provide login details!", 400))
@@ -65,7 +65,7 @@ export const login = catchAsyncErrors(async(req,res,next) => {
     
     const user = await User.findOne({email}).select("+password");
     if(!user){
-        return next(new ErrorHandler("Invalid password or email!", 400));
+        return next(new ErrorHandler("Invalid Email"));
     }
     
     const isPasswordMatched = await user.comparePassword(password);
